@@ -14,10 +14,6 @@ To get the most up to date commands run `yarn run`.
 
 For CI, it is recommended to us the command `cy:ci`:
 
-```bash
-yarn run cy:clean &&
-```
-
 ### Run Specific Tests
 
 You can run specific tests in two ways.
