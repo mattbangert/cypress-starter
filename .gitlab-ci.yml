@@ -1,0 +1,77 @@
+# to cache both npm modules and Cypress binary we use environment variables
+# to point at the folders we can list as paths in "cache" job settings
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  TEST_TAGS: ""
+  NEW_PASSWORD: ""
+
+# cache using branch name
+# https://gitlab.com/help/ci/caching/index.md
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - cache/Cypress
+    - node_modules
+
+stages:
+  - lint
+  - build
+  - test
+
+# Installs NPM dependencies and Cypress
+install:
+  image: cypress/base:14.17.0
+  stage: build
+  script:
+    - yarn run ci
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - yarn run cypress cache path
+    - yarn run cypress cache list
+    - yarn run cy:verify
+    - yarn run cy:info
+
+eslint:
+  image: node:14.17-alpine
+  stage: lint
+  script:
+    - yarn run lint
+
+# Run Tests
+test:
+  image: cypress/base:14.17.0
+  stage: test
+  rules:
+    - if: '$NEW_PASSWORD'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: always
+  script:
+    - env
+    - yarn run ci
+    - yarn run cypress cache path
+    - yarn run cypress cache list
+    - yarn run cy:verify
+    - yarn run cy:info
+    # Run some Cypress test
+    # If the test tags are not null, supply them.
+    - >
+      if [ -z "$TEST_TAGS" ]; then
+        echo "No tags found, running all tests."
+        yarn cy:run
+      else
+        yarn cy:run --env grepTags="$TEST_TAGS"
+      fi
+    # Merge the reports to a single junit style
+    - yarn cy:merge-reports
+  artifacts:
+    when: always
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+      - cypress/results/combined-report.xml
+    expire_in: 10 days
+    reports:
+      junit: cypress/results/combined-report.xml

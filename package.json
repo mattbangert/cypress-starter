@@ -1,0 +1,34 @@
+{
+  "name": "cypress-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mattbangert/cypress-starter.git",
+  "author": "Matt Bangert <mattbangert@gmail.com>",
+  "private": true,
+  "devDependencies": {
+    "cypress": "^8.3.0",
+    "cypress-grep": "^2.5.3",
+    "cypress-multi-reporters": "^1.5.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-cypress": "^2.11.3",
+    "junit-report-merger": "^3.0.1",
+    "mocha": "^9.1.0",
+    "mocha-junit-reporter": "^2.0.0",
+    "prettier": "2.3.2"
+  },
+  "scripts": {
+    "ci": "npx yarn install --frozen-lockfile",
+    "lint": "eslint cypress/",
+    "cy": "npx cypress --help",
+    "cy:clean": "npx rimraf cypress/results/ && npx rimraf cypress/screenshots && npx rimraf cypress/videos",
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run",
+    "cy:run:chrome": "npx cypress run -b chrome",
+    "cy:run:firefox": "npx cypress run -b firefox",
+    "cy:run:edge": "npx cypress run -b edge",
+    "cy:merge-reports": "npx jrm cypress/results/combined-report.xml cypress/results/*.xml && npx rimraf cypress/results/results-*.xml",
+    "cy:ci": "yarn run cy:clean && yarn run cy:run && yarn run cy:merge-reports",
+    "cy:verify": "cypress verify",
+    "cy:info": "cypress info"
+  }
+}
