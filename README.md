@@ -12,7 +12,6 @@ See [Cypress Documentation](https://docs.cypress.io/guides/core-concepts/writing
 
 To get the most up to date commands run `yarn run`.
 
-<<<<<<< HEAD
 For CI, it is recommended to us the command `cy:ci`:
 
 ```bash
@@ -58,8 +57,3 @@ yarn run cy:run--env grepTags="@jenkins+@di2e"
 # enable the tests with "default" in the title and tag "jenkins"
 yarn run cy:run--env grep=default,grepTags=@jenkins
 ```
-
-=======
-For CI, it is recommended to us the command `cy:ci`
-
-> > > > > > > e49afa385db6d463f7ad60a1a0c878d0e13fa7be

@@ -44,7 +44,7 @@ test:
   image: cypress/base:14.17.0
   stage: test
   rules:
-    - if: '$NEW_PASSWORD'
+    - if: "$NEW_PASSWORD"
       when: always
     - if: '$CI_PIPELINE_SOURCE == "web"'
       when: always
