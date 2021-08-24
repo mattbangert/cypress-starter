@@ -1,0 +1,41 @@
+name: Cypress Starter - Run Sample Tests
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Linting
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: 'npm'
+      - name: Lint Project
+        run: |
+          yarn install --frozen-lockfile
+          yarn run
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Run Sample Tests
+      run: yarn run cy:run
+    - name: Merge Reports 
+      run: yarn run cy:merge-reports
