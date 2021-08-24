@@ -1,6 +1,6 @@
-# newPasser
+# Cypress Starter Kit
 
-Generic project to use Cypress to update passwords for given sites.
+A simple Cypress starter kit to save me, and hopefully you, time.
 
 ## Test Location
 
