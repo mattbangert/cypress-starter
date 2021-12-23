@@ -20,7 +20,7 @@ jobs:
       - name: Lint Project
         run: |
           yarn install --frozen-lockfile
-          yarn run
+          yarn lint
   build:
     runs-on: ubuntu-latest
 
